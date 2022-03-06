@@ -15,8 +15,6 @@ Usage: ./install.sh <GUEST_NAME>
        python3 run_and_test.py <GUEST_NAME>  -e
 
   GUEST_NAME    used as guest hostname, name of the VM and image file name
-  MAC_ADDRESS   allows to use specific MAC on the network, this is helpful
-                when DHCP server expects your guest to have predefined MAC
   -e            optional. Include to send email notification
 ```
 
