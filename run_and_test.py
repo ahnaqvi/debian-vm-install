@@ -65,7 +65,7 @@ try:
     # run arp -n to get ip addr of vm, then ssh into it
     output = check_output(["arp", "-n"]).decode().split("\n")
     for i in output:
-        if "virbr" in i:
+        if "virbr" in i: # vibr0 is added as a bridge by libvirt
             for j in i.split():
                 if "." in j:
                     vm_ip_address = j
@@ -118,25 +118,42 @@ try:
     os.system(F"virsh shutdown {console_name}")
 
 except Exception as e: # don't pause execution. Instead, note the error in print commands below.
-    print(e) # print exception, continue script
+    print(e.message) # print exception, continue script
 
 
 # check if all commands executed successfully
 if 'ssh_server_install_result' not in locals() or ssh_server_install_result != 0:
     print("installing SSH server failed")
+else:
+    print("SSH server installed")
 if  'utc_result' not in locals() or utc_result != 0:
     print("setting utc timezone failed")
+else:
+    print("UTC timezone set")
 if  'useradd_result' not in locals() or useradd_result != 0:
     print("useradd failed")
+else:
+    print("User added")
 if  'sudo_result' not in locals() or sudo_result != 0:
     print("adding user to sudo failed")
+else:
+    print("user added with sudo privleges")
 if  'firewall_ports_enabled_result' not in locals() or firewall_ports_enabled_result != 0:
-    if ssh_connection_result != 0:
-        print("ssh connection failed")
+    print("Could not add ssh to firewall rules")
+else:
+    print("ssh added to firewall rules")
+if ssh_connection_result != 0:
+    print("ssh connection failed")
+else:
+    print("ssh connection succeeded")
 if  'package_update_result' not in locals() or package_update_result != 0:
     print("System packages update failed")
+else:
+    print("Packages updated")
 if  'auto_update_result' not in locals() or auto_update_result != 0:
     print("auto update disable failed")
+else:
+    print("auto update disabled")
 
 # notify
 
