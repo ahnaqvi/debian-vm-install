@@ -1,19 +1,23 @@
 # Debian Stretch unattended VM guest installer
 
-*While Debian Stretch is not released yet, script uses `daily-images`.
-If you want to use Debian Jessie (e.g. current stable) please check out
-release v8.0 or update DIST_URL*
+
+*Forked from https://github.com/pin/debian-vm-install*
+
+Note that postinst.sh is not being used for the interview commands. 
+Instead, a Python based expect script is being used.
 
 Simple script that uses **virt-install** and configures Debian installer
 for unattended installation and custom configuration using **preseed**
 config in order to create freshly installed Debian KVM guest.
 
 ```
-Usage: ./install.sh <GUEST_NAME> [MAC_ADDRESS]
+Usage: ./install.sh <GUEST_NAME>
+       python3 run_and_test.py <GUEST_NAME>  -e
 
   GUEST_NAME    used as guest hostname, name of the VM and image file name
   MAC_ADDRESS   allows to use specific MAC on the network, this is helpful
                 when DHCP server expects your guest to have predefined MAC
+  -e            optional. Include to send email notification
 ```
 
 Guest OS is minimal no-GUI Debian installation configured with serial console

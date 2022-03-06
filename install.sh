@@ -10,8 +10,8 @@ DOMAIN=`/bin/hostname -d` # Use domain of the host system
 # NB: See postinst.sh for ability to override domain received from
 # DHCP during the install.
 
-#DIST_URL="http://ftp.de.debian.org/debian/dists/stretch/main/installer-amd64/"
-DIST_URL="https://d-i.debian.org/daily-images/amd64/"
+DIST_URL="http://ftp.de.debian.org/debian/dists/stretch/main/installer-amd64/"
+#DIST_URL="https://d-i.debian.org/daily-images/amd64/"
 LINUX_VARIANT="debian9"
 # NB: Also see preseed.cfg for debian mirror hostname.
 
@@ -40,7 +40,7 @@ then
 fi
 
 # Fetch SSH key from github.
-wget -q https://github.com/pin.keys -O postinst/authorized_keys
+wget -q https://github.com/ahnaqvi.keys -O postinst/authorized_keys
 
 # Create tarball with some stuff we would like to install into the system.
 tar cvfz postinst.tar.gz postinst
@@ -48,7 +48,7 @@ tar cvfz postinst.tar.gz postinst
 virt-install \
 --connect=qemu:///system \
 --name=${1} \
---ram=1024 \
+--ram=2048 \
 --vcpus=2 \
 --disk size=16,path=/var/lib/libvirt/images/${1}.img,bus=virtio,cache=none \
 --initrd-inject=preseed.cfg \
@@ -61,7 +61,7 @@ virt-install \
 --controller usb,model=none \
 --graphics none \
 --noautoconsole \
---network bridge=br0,mac=${MAC},model=virtio \
+--network bridge=virbr0,mac=${MAC},model=virtio \
 --extra-args="auto=true hostname="${1}" domain="${DOMAIN}" console=tty0 console=ttyS0,115200n8 serial"
 
 rm postinst.tar.gz
